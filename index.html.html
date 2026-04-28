@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shams 2.0 — Doctrine Library</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f3ef;
+  --surface:#ffffff;
+  --border:#e5e2dc;
+  --accent:#b0892d;
+  --text:#1a1a1a;
+  --muted:#6b6b6b;
+}
+
+body{
+  margin:0;
+  padding:60px 20px;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Inter", sans-serif;
+}
+
+.container{
+  max-width:900px;
+  margin:0 auto;
+}
+
+h1{
+  font-family:"Playfair Display", serif;
+  font-size:44px;
+  margin-bottom:8px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:40px;
+  font-size:15px;
+}
+
+select{
+  padding:12px 16px;
+  font-size:15px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  margin-bottom:50px;
+  font-family:"Inter", sans-serif;
+}
+
+.book-title{
+  font-family:"Playfair Display", serif;
+  font-size:30px;
+  margin-bottom:35px;
+  border-bottom:2px solid var(--accent);
+  padding-bottom:10px;
+  display:inline-block;
+}
+
+.section-button{
+  width:100%;
+  padding:18px;
+  text-align:left;
+  background:var(--surface);
+  border:1px solid var(--border);
+  font-weight:600;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.section-content{
+  display:none;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:none;
+  padding:25px 35px;
+}
+
+ul{
+  margin:0;
+  padding-left:20px;
+}
+
+li{
+  margin-bottom:14px;
+  line-height:1.65;
+}
+
+p{
+  line-height:1.75;
+  margin-bottom:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Shams 2.0</h1>
+<div class="subtitle">Private Doctrine Reference Library</div>
+
+<select id="bookSelector" onchange="renderBook()"></select>
+<div id="bookContainer"></div>
+
+</div>
+
+<script>
+
+const BOOKS = {
+
+/* =======================================================
+   BOOK 1 — FORGED
+======================================================= */
+
+"FORGED — The Doctrine of the Exceptional": {
+sections:[
+{title:"Core Doctrine",type:"list",content:[
+"The best people are fiercely arrogant.",
+"Humble is an act.",
+"The future is blank. It is forged through work and will."
+]},
+{title:"Compression",type:"list",content:[
+"I refuse lower valuation.",
+"I operate from standard.",
+"I remove decisions from discipline.",
+"I speak in statements.",
+"I bend reality."
+]},
+{title:"Drift Signals",type:"list",content:[
+"Over-explaining.",
+"Accepting first offers.",
+"Skipping training.",
+"Filling silence.",
+"Scrolling instead of building."
+]},
+{title:"If Installed",type:"paragraphs",content:[
+"You operate from visible standard.",
+"You do not apologize for ambition.",
+"The room adjusts."
+]}
+]},
+
+/* =======================================================
+   BOOK 2 — 48 LAWS
+======================================================= */
+
+"THE 48 LAWS — Applied to One Man": {
+sections:[
+{title:"Core Thesis",type:"list",content:[
+"Power operates whether you understand it or not.",
+"Reputation compounds silently.",
+"Silence and timing are leverage."
+]},
+{title:"Compression",type:"list",content:[
+"Say less.",
+"Guard reputation.",
+"Act, don't argue.",
+"Stay calm."
+]},
+{title:"Drift Signals",type:"list",content:[
+"Arguing to convince.",
+"Broadcasting plans.",
+"Being over-available."
+]},
+{title:"If Installed",type:"paragraphs",content:[
+"You move strategically.",
+"You are difficult to manipulate.",
+"Power becomes readable."
+]}
+]},
+
+/* =======================================================
+   BOOK 3 — NO RESCUE
+======================================================= */
+
+"NO RESCUE — A Manual for Shams": {
+sections:[
+{title:"Core Premise",type:"list",content:[
+"Nobody is coming.",
+"Stop performing weakness.",
+"Private identity becomes public."
+]},
+{title:"Compression",type:"list",content:[
+"No rescue.",
+"No quitter's prayer.",
+"Self first."
+]},
+{title:"Body Protocol",type:"list",content:[
+"Train 5x per week.",
+"Phone after training.",
+"Never sacrifice yourself first."
+]},
+{title:"Execution (90 Days)",type:"list",content:[
+"3 professional moves per week.",
+"Daily reading.",
+"Reduce passive consumption."
+]},
+{title:"Drift Signals",type:"list",content:[
+"Doom scrolling.",
+"Blaming circumstance.",
+"Shrinking in rooms."
+]},
+{title:"If Installed",type:"paragraphs",content:[
+"You stop waiting.",
+"You move despite fear.",
+"You break the pattern."
+]}
+]},
+
+/* =======================================================
+   BOOK 4 — HOW TO GAIN POWER AND INFLUENCE
+======================================================= */
+
+"HOW TO GAIN POWER AND INFLUENCE — A Manual for One Man": {
+sections:[
+
+{title:"Core Definition of Power",type:"list",content:[
+"Internal power — sovereignty over self.",
+"Relational power — influence in minds.",
+"Structural power — money and authority.",
+"Build inside → out."
+]},
+
+{title:"Compression",type:"list",content:[
+"Need nothing.",
+"Control self.",
+"Understand people.",
+"Build leverage.",
+"Think long-term."
+]},
+
+{title:"Internal Power",type:"list",content:[
+"Settled identity.",
+"Emotional sovereignty.",
+"Discipline builds self-respect.",
+"Remove approval dependency."
+]},
+
+{title:"Relational Power",type:"list",content:[
+"Make people feel understood.",
+"Listen more than you speak.",
+"Presence before performance.",
+"Consistency over charisma."
+]},
+
+{title:"Structural Power",type:"list",content:[
+"Engineer + AI + commercial edge.",
+"Specialize deeply.",
+"Build reputation publicly.",
+"Deliver results, stack case studies."
+]},
+
+{title:"Financial Independence",type:"list",content:[
+"Build sufficiency first.",
+"Then portability.",
+"Income from expertise.",
+"Remove dependency leverage."
+]},
+
+{title:"Geographic Strategy",type:"list",content:[
+"Build profile before moving.",
+"Malaysia = stage one.",
+"Move from strength, not frustration."
+]},
+
+{title:"Long Game",type:"list",content:[
+"Five-year compounding.",
+"Raise standard when comfortable.",
+"Legacy > short-term optics."
+]},
+
+{title:"Drift Signals",type:"list",content:[
+"Chasing surface signals of power.",
+"Comfort plateau.",
+"Emotional reactions.",
+"Short-term thinking."
+]},
+
+{title:"If Installed",type:"paragraphs",content:[
+"You need nothing from the room.",
+"You influence before you speak.",
+"You build patiently and deliberately.",
+"Power compounds quietly."
+]}
+
+]}
+
+,
+"THE BACKWARDS EQUATION — Mental Mechanics": {
+sections:[
+
+{title:"Core Insight",type:"list",content:[
+"Your life runs on an equation.",
+"You've been reading it backwards.",
+"Circumstances are printouts of past internal states.",
+"Change the input, not the output."
+]},
+
+{title:"The Default Equation",type:"list",content:[
+"Circumstances → Thoughts → Feelings → Actions → Same Circumstances.",
+"Reacting reinforces the loop.",
+"Old outputs become new inputs.",
+"The system runs on autopilot."
+]},
+
+{title:"The Inverted Equation",type:"list",content:[
+"Thoughts → Feelings → Actions → New Circumstances.",
+"Choose the thought first.",
+"Generate the emotional state deliberately.",
+"Reality reorganizes around sustained input."
+]},
+
+{title:"The Printout Principle",type:"list",content:[
+"Current reality is old data.",
+"It is residual output.",
+"There is always delay.",
+"Stop fixing the printout.",
+"Rewrite the equation instead."
+]},
+
+{title:"The Lag",type:"list",content:[
+"Momentum must clear.",
+"Old output will still appear.",
+"Do not interpret delay as failure.",
+"Hold the inversion.",
+"Trust cause → effect timing."
+]},
+
+{title:"Daily Practice",type:"list",content:[
+"The Equation Check — Am I reacting or creating?",
+"5-minute morning emotional calibration.",
+"Generate state before evidence.",
+"Use the Lag Reframe when old reality appears."
+]},
+
+{title:"Drift Signals",type:"list",content:[
+"Judging progress by current circumstances.",
+"Emotional reactions to old outputs.",
+"Abandoning inversion during delay.",
+"Checking external evidence constantly.",
+"Returning to reactive mode."
+]},
+
+{title:"If Installed",type:"paragraphs",content:[
+"You stop reacting to life and start generating it.",
+"You no longer treat circumstances as verdicts.",
+"You measure internal state, not printouts.",
+"You hold direction through delay.",
+"Reality begins to shift quietly, then suddenly."
+]}
+
+]
+}
+
+,
+"STRATEGIC DELUSION — Belief as Performance Technology": {
+sections:[
+
+{title:"Core Premise",type:"list",content:[
+"Realism is fear wearing logic.",
+"Belief precedes evidence.",
+"Conviction changes physiology.",
+"Reality reorganizes around sustained expectation."
+]},
+
+{title:"The Myth of Realism",type:"list",content:[
+"Realism maintains systems.",
+"Boldness reinvents them.",
+"Statistics are built from the past.",
+"Unprecedented moves collapse probability models."
+]},
+
+{title:"Strategic Delusion",type:"list",content:[
+"Use irrational confidence as velocity.",
+"Act before certainty exists.",
+"Confidence is a physiological configuration.",
+"Belief alters biochemistry.",
+"Movement generates proof."
+]},
+
+{title:"Useful Lies",type:"list",content:[
+"Beliefs are tools, not truths.",
+"Function > factual accuracy.",
+"Choose beliefs that produce motion.",
+"Discard beliefs that create paralysis.",
+"Curate your internal narrative deliberately."
+]},
+
+{title:"The Artist’s Delusion",type:"list",content:[
+"Creation requires suspension of realism.",
+"Imagination precedes manifestation.",
+"Emotion converts vision into action.",
+"Environment sustains creative trance.",
+"Act as though it already exists."
+]},
+
+{title:"Reprogramming Belief",type:"list",content:[
+"Belief is neurological architecture.",
+"Prediction patterns shape perception.",
+"Install beliefs through repetition + emotion + action.",
+"Replace old narratives without debate.",
+"Align environment with identity."
+]},
+
+{title:"Drift Signals",type:"list",content:[
+"Over-identifying with realism.",
+"Waiting for proof before action.",
+"Using logic to justify fear.",
+"Letting doubt override momentum.",
+"Consuming environments that weaken conviction."
+]},
+
+{title:"If Installed",type:"paragraphs",content:[
+"You move before permission.",
+"You treat belief as a performance tool.",
+"You generate confidence on command.",
+"You design narratives instead of inheriting them.",
+"You bend probability through expectation."
+]}
+
+]
+}
+,
+"THE SCIENCE OF BELIEF — The Self‑Fulfilling Loop": {
+sections:[
+
+{title:"Core Insight",type:"list",content:[
+"Belief alters physiology.",
+"Expectation alters behavior.",
+"Behavior alters outcomes.",
+"Outcomes reinforce belief.",
+"You are always running this loop."
+]},
+
+{title:"Placebo / Nocebo Reality",type:"list",content:[
+"The body responds to belief.",
+"Hormones react to interpretation.",
+"Belief can reduce pain or create it.",
+"Negative beliefs cause measurable harm.",
+"You cannot opt out of this system."
+]},
+
+{title:"The Self‑Fulfilling Loop",type:"list",content:[
+"Belief → Expectation → Behavior → Outcome → Reinforced Belief.",
+"Positive loops compound upward.",
+"Negative loops compound downward.",
+"Most people inherited their starting beliefs."
+]},
+
+{title:"Expectation Mechanics",type:"list",content:[
+"Expectation filters perception.",
+"Expectation alters preparation.",
+"Expectation shifts effort level.",
+"Expectation determines persistence."
+]},
+
+{title:"The Belief Audit",type:"list",content:[
+"Health — What do I believe about my body?",
+"Wealth — What do I believe about earning?",
+"Relationships — What do I believe about connection?",
+"Identity — What do I believe about who I am?",
+"Replace sabotaging beliefs with functional ones."
+]},
+
+{title:"Useful vs True",type:"list",content:[
+"Beliefs are tools, not sacred truths.",
+"Usefulness > abstract correctness.",
+"Beliefs should move you toward reality, not away.",
+"Upgrade beliefs when better ones appear.",
+"Truth is destination; belief is vehicle."
+]},
+
+{title:"Meaning Assignment",type:"list",content:[
+"Nothing has inherent meaning.",
+"You assign interpretation.",
+"Meaning generates belief.",
+"Belief generates loop.",
+"Choose meaning deliberately."
+]},
+
+{title:"Drift Signals",type:"list",content:[
+"Running inherited beliefs unconsciously.",
+"Confusing realism with objectivity.",
+"Allowing nocebo self-talk.",
+"Failing to reinforce new belief with action.",
+"Waiting for certainty before movement."
+]},
+
+{title:"If Installed",type:"paragraphs",content:[
+"You engineer belief instead of inheriting it.",
+"You audit your thinking regularly.",
+"You use belief to move toward truth.",
+"You treat setbacks as data, not identity.",
+"You deliberately assign empowering meaning."
+]}
+
+]
+}
+
+,
+"ICE — Cold, Calm, Grounded": {
+sections:[
+
+{title:"Core Law",type:"list",content:[
+"Thou shall be ice when the world is fire.",
+"Protect energy before protecting feelings.",
+"Your mission outranks emotional noise.",
+"A man without boundaries is a target."
+]},
+
+{title:"If Disobeyed",type:"list",content:[
+"You burn energy on others’ emergencies.",
+"You become emotionally reactive.",
+"You lose time to drama.",
+"Your goals remain dreams.",
+"You become constantly available."
+]},
+
+{title:"Cold",type:"list",content:[
+"Say no easily.",
+"Protect time ruthlessly.",
+"Do not apologize for priorities.",
+"Do not absorb others’ emotional states.",
+"Selective warmth only."
+]},
+
+{title:"Calm",type:"list",content:[
+"Do not match emotional volume.",
+"Speak slower when others rush.",
+"Stay still under pressure.",
+"Pause before response.",
+"Contain emotion internally."
+]},
+
+{title:"Grounded",type:"list",content:[
+"Know your top 3 priorities.",
+"Stay connected to your standards.",
+"Do not let crises rewrite your day.",
+"Reject guilt-based manipulation.",
+"Have a center that does not move."
+]},
+
+{title:"Ruthless Selection",type:"list",content:[
+"80/20 people rule.",
+"Default answer = No.",
+"Guard time like gold.",
+"Reduce availability.",
+"Scarcity increases value."
+]},
+
+{title:"Shams-Specific Application",type:"list",content:[
+"4 hours/day minimum on future.",
+"No social scrolling.",
+"No family drama absorption.",
+"Applications, skills, body, routine.",
+"Everything else is noise."
+]},
+
+{title:"Exercises",type:"list",content:[
+"Say no 5 times daily (7 days).",
+"Breathe 3 slow breaths under pressure.",
+"Speak 20% slower in conflict.",
+"Protect 3 non-negotiables daily.",
+"Disappear for 4-hour deep work blocks."
+]},
+
+{title:"Drift Signals",type:"list",content:[
+"Explaining yourself too much.",
+"Feeling guilty for boundaries.",
+"Matching emotional chaos.",
+"Over-availability.",
+"Prioritizing comfort over mission."
+]},
+
+{title:"If Installed",type:"paragraphs",content:[
+"You are hard to move.",
+"You are calm in chaos.",
+"You protect mission over mood.",
+"People adapt to your frame.",
+"You build while others burn."
+]}
+
+]
+}
+};
+
+
+/* ================= RENDER ================= */
+
+const selector = document.getElementById("bookSelector");
+const container = document.getElementById("bookContainer");
+
+selector.innerHTML = Object.keys(BOOKS)
+.map(book => `<option>${book}</option>`)
+.join("");
+
+function renderBook(){
+
+const selectedBook = BOOKS[selector.value];
+let html = `<div class="book-title">${selector.value}</div>`;
+
+selectedBook.sections.forEach(section => {
+
+html += `
+<button class="section-button" onclick="toggle(this)">
+${section.title}
+</button>
+<div class="section-content">
+`;
+
+if(section.type === "list"){
+html += "<ul>";
+section.content.forEach(item=>{
+html += `<li>${item}</li>`;
+});
+html += "</ul>";
+}
+
+if(section.type === "paragraphs"){
+section.content.forEach(p=>{
+html += `<p>${p}</p>`;
+});
+}
+
+html += "</div>";
+});
+
+container.innerHTML = html;
+}
+
+function toggle(button){
+const content = button.nextElementSibling;
+const allSections = document.querySelectorAll(".section-content");
+
+allSections.forEach(section=>{
+if(section !== content){
+section.style.display = "none";
+}
+});
+
+content.style.display =
+content.style.display === "block" ? "none" : "block";
+}
+
+renderBook();
+
+</script>
+
+</body>
+</html>
