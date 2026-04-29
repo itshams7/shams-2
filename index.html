@@ -203,9 +203,36 @@ h1{
 }  
 .action-bar{
   display:flex;
-  gap:15px;
-  margin-bottom:25px;
-  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.left-controls{
+  display:flex;
+}
+
+.right-controls{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.main-btn{
+  width:140px;
+  height:42px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  font-family:"Inter", sans-serif;
+  font-size:14px;
+}
+
+#resetTimer{
+  font-size:16px;
+  color:var(--accent);
+  min-width:70px;
+  text-align:right;
 }
   
 </style>
@@ -226,16 +253,27 @@ h1{
 <div class="subtitle">Private Doctrine Reference Library</div>
 
 <div class="action-bar">
-  <button id="randomLawBtn" onclick="generateLaw()">
-    Generate Law
-  </button>
 
-  <button id="resetBtn" onclick="startReset()">
-    3-Minute Reset
-  </button>
+  <div class="left-controls">
+    <button class="main-btn" onclick="generateLaw()">
+      Generate Law
+    </button>
+  </div>
+
+  <div class="right-controls">
+    <div id="resetTimer"></div>
+
+    <button class="main-btn" onclick="startReset()">
+      Start Reset
+    </button>
+
+    <button class="main-btn" onclick="stopReset()">
+      Stop
+    </button>
+  </div>
+
 </div>
 
-<div id="resetTimer"></div>
 <div id="lawDisplay"></div>
 <select id="categorySelector" onchange="selectCategory()">
   <option value="">Select Category</option>
@@ -284,7 +322,6 @@ if(resetInterval){
 
 let time = 180;
 const timerDisplay = document.getElementById("resetTimer");
-
 timerDisplay.style.display = "block";
 
 function updateTimer(){
@@ -308,11 +345,21 @@ updateTimer();
 if(time < 0){
   clearInterval(resetInterval);
   resetInterval = null;
-  timerDisplay.innerText = "Reset Complete.";
+  timerDisplay.innerText = "Complete";
 }
 
 },1000);
 
+}
+
+function stopReset(){
+  if(resetInterval){
+    clearInterval(resetInterval);
+    resetInterval = null;
+  }
+
+  const timerDisplay = document.getElementById("resetTimer");
+  timerDisplay.innerText = "";
 }
 
   
@@ -1084,7 +1131,7 @@ sections:[
 ]}
 
 ]
-}
+},
 "NECROSIS — Architecture of the Predator": {
 category: "dark",
 sections:[
