@@ -226,7 +226,6 @@ h1{
 <div class="subtitle">Private Doctrine Reference Library</div>
 
 <div class="action-bar">
-
   <button id="randomLawBtn" onclick="generateLaw()">
     Generate Law
   </button>
@@ -234,19 +233,9 @@ h1{
   <button id="resetBtn" onclick="startReset()">
     3-Minute Reset
   </button>
-
 </div>
 
 <div id="resetTimer"></div>
-<div id="lawDisplay"></div>
-  3-Minute Reset
-</button>
-
-<div id="resetTimer"></div>
-  
-  Generate Law
-</button>
-
 <div id="lawDisplay"></div>
 <select id="categorySelector" onchange="selectCategory()">
   <option value="">Select Category</option>
@@ -283,10 +272,8 @@ Object.keys(BOOKS).forEach(book=>{
 bookSelector.innerHTML = options;
 bookSelector.style.display = "block";
 
-renderBook();
 }
   
-function startReset(){
 let resetInterval = null;
 
 function startReset(){
@@ -295,7 +282,7 @@ if(resetInterval){
   clearInterval(resetInterval);
 }
 
-let time = 180; // 3 minutes
+let time = 180;
 const timerDisplay = document.getElementById("resetTimer");
 
 timerDisplay.style.display = "block";
@@ -1107,9 +1094,6 @@ sections:[
 const selector = document.getElementById("bookSelector");
 const container = document.getElementById("bookContainer");
 
-selector.innerHTML = Object.keys(BOOKS)
-.map(book => `<option>${book}</option>`)
-.join("");
 
 function renderBook(){
 
