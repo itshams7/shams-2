@@ -72,11 +72,13 @@ select{
 }
 
 .section-content{
-  display:none;
+  max-height:0;
+  overflow:hidden;
   background:var(--surface);
   border:1px solid var(--border);
   border-top:none;
-  padding:25px 35px;
+  padding:0 35px;
+  transition:all 0.3s ease;
 }
 
 ul{
@@ -137,6 +139,52 @@ p{
   font-weight:600;
   cursor:pointer;
 }
+
+#randomLawBtn{
+  padding:12px 18px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  font-family:"Inter", sans-serif;
+  margin-bottom:25px;
+}
+
+#lawDisplay{
+  margin-bottom:40px;
+  padding:20px;
+  background:var(--surface);
+  border-left:3px solid var(--accent);
+  display:none;
+  font-style:italic;
+}
+@media (max-width: 600px){
+
+body{
+  padding:40px 15px;
+}
+
+h1{
+  font-size:34px;
+}
+
+.book-title{
+  font-size:24px;
+}
+
+.section-button{
+  font-size:14px;
+  padding:16px;
+}
+
+.section-content{
+  padding:20px;
+}
+
+#randomLawBtn{
+  width:100%;
+}
+
+}
 </style>
 </head>
 
@@ -154,12 +202,36 @@ p{
 <h1>Shams 2.0</h1>
 <div class="subtitle">Private Doctrine Reference Library</div>
 
+<button id="randomLawBtn" onclick="generateLaw()">
+  Generate Law
+</button>
+
+<div id="lawDisplay"></div>
 <select id="bookSelector" onchange="renderBook()"></select>
 <div id="bookContainer"></div>
 
 </div>
 
 <script>
+
+function generateLaw(){
+
+let allLines = [];
+
+Object.keys(BOOKS).forEach(book=>{
+  BOOKS[book].sections.forEach(section=>{
+    section.content.forEach(item=>{
+      allLines.push(item);
+    });
+  });
+});
+
+const random = allLines[Math.floor(Math.random() * allLines.length)];
+
+const display = document.getElementById("lawDisplay");
+display.style.display = "block";
+display.innerText = random;
+}
 
 const BOOKS = {
 
@@ -883,17 +955,25 @@ container.innerHTML = html;
 }
 
 function toggle(button){
+
 const content = button.nextElementSibling;
 const allSections = document.querySelectorAll(".section-content");
 
 allSections.forEach(section=>{
-if(section !== content){
-section.style.display = "none";
-}
+  if(section !== content){
+    section.style.maxHeight = null;
+    section.style.padding = "0 35px";
+  }
 });
 
-content.style.display =
-content.style.display === "block" ? "none" : "block";
+if(content.style.maxHeight){
+  content.style.maxHeight = null;
+  content.style.padding = "0 35px";
+} else {
+  content.style.maxHeight = content.scrollHeight + "px";
+  content.style.padding = "25px 35px";
+}
+
 }
 /* ================= PASSWORD ================= */
 
