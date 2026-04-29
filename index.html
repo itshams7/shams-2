@@ -310,6 +310,11 @@ Object.keys(BOOKS).forEach(book=>{
 bookSelector.innerHTML = options;
 bookSelector.style.display = "block";
 
+if(options){
+  bookSelector.selectedIndex = 0;
+  renderBook();
+}
+
 }
   
 let resetInterval = null;
