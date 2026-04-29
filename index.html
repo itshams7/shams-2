@@ -185,6 +185,23 @@ h1{
 }
 
 }
+
+#resetBtn{
+  padding:12px 18px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  font-family:"Inter", sans-serif;
+  margin-left:10px;
+}
+
+#resetTimer{
+  margin-top:15px;
+  font-size:18px;
+  color:var(--accent);
+  display:none;
+}  
+  
 </style>
 </head>
 
@@ -203,6 +220,12 @@ h1{
 <div class="subtitle">Private Doctrine Reference Library</div>
 
 <button id="randomLawBtn" onclick="generateLaw()">
+<button id="resetBtn" onclick="startReset()">
+  3-Minute Reset
+</button>
+
+<div id="resetTimer"></div>
+  
   Generate Law
 </button>
 
@@ -214,26 +237,66 @@ h1{
 
 <script>
 
+function startReset(){
+
+let time = 180; // 3 minutes
+const timerDisplay = document.getElementById("resetTimer");
+
+timerDisplay.style.display = "block";
+timerDisplay.innerText = "03:00";
+
+const interval = setInterval(()=>{
+
+let minutes = Math.floor(time / 60);
+let seconds = time % 60;
+
+seconds = seconds < 10 ? "0" + seconds : seconds;
+
+timerDisplay.innerText = `0${minutes}:${seconds}`;
+
+time--;
+
+if(time < 0){
+  clearInterval(interval);
+  timerDisplay.innerText = "Reset Complete.";
+}
+
+},1000);
+
+}
+
+  
 function generateLaw(){
 
-let allLines = [];
+let allEntries = [];
 
 Object.keys(BOOKS).forEach(book=>{
   BOOKS[book].sections.forEach(section=>{
     section.content.forEach(item=>{
-      allLines.push(item);
+      allEntries.push({
+        text: item,
+        book: book,
+        section: section.title
+      });
     });
   });
 });
 
-const random = allLines[Math.floor(Math.random() * allLines.length)];
+const random = allEntries[Math.floor(Math.random() * allEntries.length)];
 
 const display = document.getElementById("lawDisplay");
 display.style.display = "block";
-display.innerText = random;
-}
 
-const BOOKS = {
+display.innerHTML = `
+  <div style="font-size:18px; margin-bottom:10px;">
+    ${random.text}
+  </div>
+  <div style="font-size:13px; color:var(--muted);">
+    — ${random.book} | ${random.section}
+  </div>
+`;
+
+}
 
 /* =======================================================
    BOOK 1 — FORGED
@@ -907,7 +970,61 @@ sections:[
 
 ]
   
+},
+  "THE 5-YEAR ARC — Compounding Trajectory": {
+sections:[
+
+{title:"Who I Am Becoming",type:"list",content:[
+"A sovereign operator.",
+"Financially independent.",
+"Strategically calm.",
+"Physically disciplined.",
+"Respected for capability."
+]},
+
+{title:"What Compounds",type:"list",content:[
+"Reputation.",
+"Skill stack (Engineering + AI + Strategy).",
+"Body strength.",
+"Network quality.",
+"Emotional control."
+]},
+
+{title:"What I Refuse",type:"list",content:[
+"Average environments.",
+"Emotional volatility.",
+"Short-term validation.",
+"Comfort stagnation.",
+"Reactive living."
+]},
+
+{title:"Current Leverage Focus",type:"list",content:[
+"Deep skill development.",
+"Visible output.",
+"Strategic positioning.",
+"Income independence.",
+"Controlled expansion."
+]},
+
+{title:"Drift Risks (Long-Term)",type:"list",content:[
+"Comfort plateau.",
+"Emotional distraction.",
+"Over-consumption.",
+"Scattered focus.",
+"Short-term thinking."
+]},
+
+{title:"If Installed (5 Years)",type:"paragraphs",content:[
+"You move with internal gravity.",
+"You are financially independent.",
+"You are strategically respected.",
+"You built instead of reacting.",
+"You became difficult to replace."
+]}
+
+]
 }
+
 };
 
 
