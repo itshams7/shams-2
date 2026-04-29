@@ -201,6 +201,12 @@ h1{
   color:var(--accent);
   display:none;
 }  
+.action-bar{
+  display:flex;
+  gap:15px;
+  margin-bottom:25px;
+  flex-wrap:wrap;
+}
   
 </style>
 </head>
@@ -219,8 +225,20 @@ h1{
 <h1>Shams 2.0</h1>
 <div class="subtitle">Private Doctrine Reference Library</div>
 
-<button id="randomLawBtn" onclick="generateLaw()">
-<button id="resetBtn" onclick="startReset()">
+<div class="action-bar">
+
+  <button id="randomLawBtn" onclick="generateLaw()">
+    Generate Law
+  </button>
+
+  <button id="resetBtn" onclick="startReset()">
+    3-Minute Reset
+  </button>
+
+</div>
+
+<div id="resetTimer"></div>
+<div id="lawDisplay"></div>
   3-Minute Reset
 </button>
 
@@ -230,34 +248,79 @@ h1{
 </button>
 
 <div id="lawDisplay"></div>
-<select id="bookSelector" onchange="renderBook()"></select>
+<select id="categorySelector" onchange="selectCategory()">
+  <option value="">Select Category</option>
+  <option value="normal">Normal</option>
+  <option value="dark">Dark</option>
+</select>
+
+<select id="bookSelector" onchange="renderBook()" style="display:none; margin-top:15px;"></select>
 <div id="bookContainer"></div>
 
 </div>
 
 <script>
 
+function selectCategory(){
+
+const category = document.getElementById("categorySelector").value;
+const bookSelector = document.getElementById("bookSelector");
+
+if(!category){
+  bookSelector.style.display = "none";
+  bookSelector.innerHTML = "";
+  return;
+}
+
+let options = "";
+
+Object.keys(BOOKS).forEach(book=>{
+  if(BOOKS[book].category === category){
+    options += `<option value="${book}">${book}</option>`;
+  }
+});
+
+bookSelector.innerHTML = options;
+bookSelector.style.display = "block";
+
+renderBook();
+}
+  
 function startReset(){
+let resetInterval = null;
+
+function startReset(){
+
+if(resetInterval){
+  clearInterval(resetInterval);
+}
 
 let time = 180; // 3 minutes
 const timerDisplay = document.getElementById("resetTimer");
 
 timerDisplay.style.display = "block";
-timerDisplay.innerText = "03:00";
 
-const interval = setInterval(()=>{
+function updateTimer(){
+  let minutes = Math.floor(time / 60);
+  let seconds = time % 60;
 
-let minutes = Math.floor(time / 60);
-let seconds = time % 60;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
 
-seconds = seconds < 10 ? "0" + seconds : seconds;
+  timerDisplay.innerText = `${minutes}:${seconds}`;
+}
 
-timerDisplay.innerText = `0${minutes}:${seconds}`;
+updateTimer();
+
+resetInterval = setInterval(()=>{
 
 time--;
 
+updateTimer();
+
 if(time < 0){
-  clearInterval(interval);
+  clearInterval(resetInterval);
+  resetInterval = null;
   timerDisplay.innerText = "Reset Complete.";
 }
 
@@ -303,6 +366,7 @@ const BOOKS = {
 ======================================================= */
 
 "FORGED — The Doctrine of the Exceptional": {
+category: "normal",
 sections:[
 {title:"Core Doctrine",type:"list",content:[
 "The best people are fiercely arrogant.",
@@ -335,6 +399,7 @@ sections:[
 ======================================================= */
 
 "THE 48 LAWS — Applied to One Man": {
+category: "normal",
 sections:[
 {title:"Core Thesis",type:"list",content:[
 "Power operates whether you understand it or not.",
@@ -364,6 +429,7 @@ sections:[
 ======================================================= */
 
 "NO RESCUE — A Manual for Shams": {
+category: "normal",
 sections:[
 {title:"Core Premise",type:"list",content:[
 "Nobody is coming.",
@@ -402,6 +468,7 @@ sections:[
 ======================================================= */
 
 "HOW TO GAIN POWER AND INFLUENCE — A Manual for One Man": {
+category: "normal",
 sections:[
 
 {title:"Core Definition of Power",type:"list",content:[
@@ -477,6 +544,7 @@ sections:[
 
 ,
 "THE BACKWARDS EQUATION — Mental Mechanics": {
+category: "normal",
 sections:[
 
 {title:"Core Insight",type:"list",content:[
@@ -544,6 +612,7 @@ sections:[
 
 ,
 "STRATEGIC DELUSION — Belief as Performance Technology": {
+category: "normal",
 sections:[
 
 {title:"Core Premise",type:"list",content:[
@@ -612,6 +681,7 @@ sections:[
 }
 ,
 "THE SCIENCE OF BELIEF — The Self‑Fulfilling Loop": {
+category: "normal",
 sections:[
 
 {title:"Core Insight",type:"list",content:[
@@ -689,6 +759,7 @@ sections:[
 
 ,
 "ICE — Cold, Calm, Grounded": {
+category: "normal",
 sections:[
 
 {title:"Core Law",type:"list",content:[
@@ -774,6 +845,7 @@ sections:[
 }
   ,
 "ANTI-COASTING — The Full Potential Protocol": {
+category: "normal",
 sections:[
 
 {title:"Core Premise",type:"list",content:[
@@ -860,6 +932,7 @@ sections:[
 }
   ,
 "THE TEN COMMANDMENTS — Complete Doctrine": {
+category: "normal",
 sections:[
 
 {title:"Commandment 1 — Accept No False Gods",type:"list",content:[
@@ -972,6 +1045,7 @@ sections:[
   
 },
   "THE 5-YEAR ARC — Compounding Trajectory": {
+category: "normal",
 sections:[
 
 {title:"Who I Am Becoming",type:"list",content:[
@@ -1109,7 +1183,6 @@ function unlock(){
 if(sessionStorage.getItem("shamsUnlocked") === "true"){
   document.getElementById("lockScreen").style.display = "none";
 }
-renderBook();
 
 </script>
 
