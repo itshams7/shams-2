@@ -9,44 +9,49 @@
 
 <style>
 :root{
-  --bg:#f5f3ef;
-  --surface:#ffffff;
-  --border:#e5e2dc;
-  --accent:#b0892d;
-  --text:#1a1a1a;
-  --muted:#6b6b6b;
+  --bg:#121212;
+  --surface:#1b1b1b;
+  --surface-2:#222222;
+  --border:#2c2c2c;
+  --accent:#c6a85b;
+  --accent-soft:#9f8446;
+  --text:#e8e8e8;
+  --muted:#9a9a9a;
 }
 
 body{
   margin:0;
-  padding:60px 20px;
+  padding:100px 30px;
   background:var(--bg);
   color:var(--text);
   font-family:"Inter", sans-serif;
+  letter-spacing:0.2px;
 }
 
 .container{
-  max-width:900px;
+  max-width:780px;
   margin:0 auto;
 }
-
 h1{
   font-family:"Playfair Display", serif;
-  font-size:44px;
-  margin-bottom:8px;
+  font-size:48px;
+  margin-bottom:12px;
+  font-weight:600;
 }
 
 .subtitle{
   color:var(--muted);
-  margin-bottom:40px;
-  font-size:15px;
+  margin-bottom:60px;
+  font-size:14px;
+  letter-spacing:1px;
+  text-transform:uppercase;
 }
-
 select{
-  padding:12px 16px;
-  font-size:15px;
+  padding:14px 16px;
+  font-size:14px;
   border:1px solid var(--border);
   background:var(--surface);
+  color:var(--text);
   margin-bottom:50px;
   font-family:"Inter", sans-serif;
 }
@@ -62,23 +67,20 @@ select{
 
 .section-button{
   width:100%;
-  padding:18px;
+  padding:20px;
   text-align:left;
   background:var(--surface);
   border:1px solid var(--border);
-  font-weight:600;
+  font-weight:500;
   cursor:pointer;
-  font-size:15px;
+  font-size:14px;
+  color:var(--text);
+  transition:background 0.2s ease, border 0.2s ease;
 }
 
-.section-content{
-  max-height:0;
-  overflow:hidden;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-top:none;
-  padding:0 35px;
-  transition:all 0.3s ease;
+.section-button:hover{
+  background:var(--surface-2);
+  border-color:var(--accent-soft);
 }
 
 ul{
@@ -100,7 +102,7 @@ p{
 #lockScreen{
   position:fixed;
   inset:0;
-  background:rgba(245,243,239,0.96);
+  background:rgba(18,18,18,0.98);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -150,12 +152,13 @@ p{
 }
 
 #lawDisplay{
-  margin-bottom:40px;
-  padding:20px;
-  background:var(--surface);
+  margin-bottom:50px;
+  padding:30px;
+  background:var(--surface-2);
   border-left:3px solid var(--accent);
   display:none;
   font-style:italic;
+  color:var(--text);
 }
 @media (max-width: 600px){
 
@@ -177,23 +180,17 @@ h1{
 }
 
 .section-content{
-  padding:20px;
-}
-
-#randomLawBtn{
-  width:100%;
-}
-
-}
-
-#resetBtn{
-  padding:12px 18px;
+  max-height:0;
+  overflow:hidden;
+  background:var(--surface-2);
   border:1px solid var(--border);
-  background:var(--surface);
-  cursor:pointer;
-  font-family:"Inter", sans-serif;
-  margin-left:10px;
+  border-top:none;
+  padding:0 35px;
+  transition:all 0.3s ease;
 }
+
+}
+
 
 #resetTimer{
   margin-top:15px;
@@ -219,20 +216,33 @@ h1{
 }
 
 .main-btn{
-  width:140px;
-  height:42px;
+  width:150px;
+  height:44px;
   border:1px solid var(--border);
   background:var(--surface);
+  color:var(--text);
   cursor:pointer;
   font-family:"Inter", sans-serif;
-  font-size:14px;
+  font-size:13px;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  transition:all 0.2s ease;
 }
 
-#resetTimer{
-  font-size:16px;
+.main-btn:hover{
+  border-color:var(--accent);
   color:var(--accent);
-  min-width:70px;
+}
+#resetTimer{
+  font-size:15px;
+  color:var(--accent);
+  min-width:80px;
   text-align:right;
+  letter-spacing:1px;
+}
+  .section-button:hover{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent);
 }
   
 </style>
@@ -1229,6 +1239,33 @@ sections:[
 "Anxiety is the imagination used against itself. Use your imagination to build the machine, not to simulate the ghost."
 ]}
 ]},
+"THE PREDATORY STILLNESS — Facial & Vocal Protocol": {
+category: "dark",
+sections:[
+{title:"Vocal Economy",type:"list",content:[
+"Silence is your default state. Words are expensive; spend them only on the objective.",
+"Never fill the void. Force the other party to negotiate with the silence.",
+"Speak in periods. Questions are for those seeking permission; statements are for those who possess it."
+]},
+{title:"The Laughter Kill-Switch",type:"list",content:[
+"Laughter is a social sedative. Refuse the dose.",
+"Analyze the intent behind humor rather than the humor itself.",
+"Physical override: Press the tongue to the roof of the mouth to kill the reflex.",
+"Maintain the Observer Gaze: You are the witness, not the participant."
+]},
+{title:"The Smirk Architecture",type:"list",content:[
+"The full smile is a leak of vulnerability. Seal it.",
+"Keep the eyes cold; let the mouth remain asymmetric.",
+"The smirk signals private insight. It is a tool of mystery, not of warmth.",
+"Rare deployment increases the value of the signal."
+]},
+{title:"The Identity Shift",type:"paragraphs",content:[
+"You are a mountain. The wind (words) and the birds (laughter) move around you, but they do not move you.",
+"By controlling the face, you control the room. By controlling the voice, you control the narrative.",
+"Be the stillness in the center of the storm."
+]}
+]},
+  
 };
 
 
