@@ -240,13 +240,6 @@ h1{
 }
 }
 
-
-#resetTimer{
-  margin-top:15px;
-  font-size:18px;
-  color:var(--accent);
-  display:none;
-}  
 .action-bar{
   display:flex;
   justify-content:space-between;
@@ -349,24 +342,7 @@ h1{
 
 <script>
 
-let options = "";
-
-Object.keys(BOOKS).forEach(book=>{
-  if(BOOKS[book].category === category){
-    options += `<option value="${book}">${book}</option>`;
-  }
-});
-
-bookSelector.innerHTML = options;
-bookSelector.style.display = "block";
-
-if(options){
-  bookSelector.selectedIndex = 0;
-  renderBook();
-}
-
-}
-  
+ 
 let resetInterval = null;
 
 function startReset(){
@@ -1344,7 +1320,6 @@ sections:[
 "Be the stillness in the center of the storm."
 ]}
 ]},
-,
 "THE SCARCITY PROTOCOL — The Power of Absence": {
 category: "dark",
 sections:[
