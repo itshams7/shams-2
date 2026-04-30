@@ -32,6 +32,48 @@ body{
   max-width:780px;
   margin:0 auto;
 }
+
+/* === SPLIT LAYOUT === */
+
+.layout{
+  display:flex;
+  gap:60px;
+}
+
+.sidebar{
+  width:220px;
+  border-right:1px solid var(--border);
+  padding-right:20px;
+}
+
+.sidebar-section{
+  margin-bottom:40px;
+}
+
+.sidebar-title{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:15px;
+}
+
+.sidebar-item{
+  display:block;
+  padding:8px 0;
+  font-size:13px;
+  color:var(--text);
+  cursor:pointer;
+  transition:color 0.2s ease;
+}
+
+.sidebar-item:hover{
+  color:var(--accent);
+}
+
+.content{
+  flex:1;
+}
 h1{
   font-family:"Playfair Display", serif;
   font-size:48px;
@@ -292,29 +334,20 @@ h1{
 </div>
 
 <div id="lawDisplay"></div>
-<select id="categorySelector" onchange="selectCategory()">
-  <option value="">Select Category</option>
-  <option value="normal">Normal</option>
-  <option value="dark">Dark</option>
-</select>
+<div class="layout">
 
-<select id="bookSelector" onchange="renderBook()" style="display:none; margin-top:15px;"></select>
-<div id="bookContainer"></div>
+  <div class="sidebar" id="sidebar">
+    <!-- Books will populate here -->
+  </div>
 
+  <div class="content" id="bookContainer">
+    <!-- Book content renders here -->
+  </div>
+
+</div>
 </div>
 
 <script>
-
-function selectCategory(){
-
-const category = document.getElementById("categorySelector").value;
-const bookSelector = document.getElementById("bookSelector");
-
-if(!category){
-  bookSelector.style.display = "none";
-  bookSelector.innerHTML = "";
-  return;
-}
 
 let options = "";
 
@@ -416,6 +449,45 @@ display.innerHTML = `
 `;
 
 }
+function populateSidebar(){
+
+  const sidebar = document.getElementById("sidebar");
+
+  let normalHTML = `
+  <div class="sidebar-section">
+    <div class="sidebar-title">Normal</div>
+  `;
+
+  let darkHTML = `
+  <div class="sidebar-section">
+    <div class="sidebar-title">Dark</div>
+  `;
+
+  Object.keys(BOOKS).forEach(book => {
+
+    if(BOOKS[book].category === "normal"){
+      normalHTML += `
+        <div class="sidebar-item" onclick="renderBookByName('${book}')">
+          ${book}
+        </div>
+      `;
+    }
+
+    if(BOOKS[book].category === "dark"){
+      darkHTML += `
+        <div class="sidebar-item" onclick="renderBookByName('${book}')">
+          ${book}
+        </div>
+      `;
+    }
+
+  });
+
+  normalHTML += `</div>`;
+  darkHTML += `</div>`;
+
+  sidebar.innerHTML = normalHTML + darkHTML;
+}  
 const BOOKS = {
 /* =======================================================
    BOOK 1 — FORGED
@@ -1272,71 +1344,196 @@ sections:[
 "Be the stillness in the center of the storm."
 ]}
 ]},
-  
+,
+"THE SCARCITY PROTOCOL — The Power of Absence": {
+category: "dark",
+sections:[
+{title:"The Availability Trap",type:"list",content:[
+"High availability = Low market value. Low availability = Luxury asset.",
+"Stop answering instantly. A 4-hour delay is the minimum for non-emergencies.",
+"If you are always 'there', you are eventually 'nowhere' in their minds.",
+"The world rewards the rare and punishes the common."
+]},
+{title:"The Myth of Absence",type:"list",content:[
+"Presence creates fame; Absence creates myth.",
+"Vanish to build. Let your results be the only proof of your existence.",
+"When you do appear, speak with the weight of someone who has been in the Void.",
+"Do not explain your absence; to explain is to apologize for your priorities."
+]},
+{title:"Selective Presence",type:"list",content:[
+"Only enter the room when the utility is high. Exit as soon as it peaks.",
+"Be the most interesting person in the room by being the one who leaves first.",
+"Your time is a finite resource. Treat every 'Yes' as a withdrawal from your life's bank account.",
+"Scarcity increases the impact of your words."
+]},
+{title:"The Sovereign Decree",type:"paragraphs",content:[
+"You are not a servant of the world's schedule. You are the architect of your own. Your 'No' is the boundary that protects your 'Yes'.",
+"By withdrawing your presence, you force the world to value your time. By focusing that time on the mission, you become the man worth waiting for.",
+"Be rare. Be ghost-like. Be indispensable."
+]}
+]}
+,
+"THE COGNITIVE BLACK BOX — Information Security": {
+category: "dark",
+sections:[
+{title:"The Dopamine Leak",type:"list",content:[
+"Talking about a goal provides the same satisfaction as achieving it. Kill the talk; keep the hunger.",
+"The moment you broadcast a plan, your drive to execute it drops by 40%.",
+"Validation is for the weak; Results are for the elite.",
+"Never trade your momentum for a 'good job' from a person who isn't on your level."
+]},
+{title:"Strategic Obfuscation",type:"list",content:[
+"If asked what you are working on, give a vague, boring answer. 'Just some engineering maintenance.'",
+"Let people underestimate you. It is the greatest tactical advantage in existence.",
+"A Sovereign Operator has no 'Status' to protect, only a 'Mission' to complete.",
+"Hide the blueprint until the building is tall enough to cast a shadow over the city."
+]},
+{title:"The External Narrative",type:"list",content:[
+"Other people will project their fears and limitations onto your ambition. Do not let them.",
+"Their 'Realism' is just a name for their own failures. Keep them outside the Box.",
+"Information is a weapon. Do not arm your detractors with knowledge of your trajectory.",
+"Privacy is the ultimate luxury in a world of digital exhibitionism."
+]},
+{title:"The Final Decree",type:"paragraphs",content:[
+"Your mind is a black site. Access is restricted to those who have a 'Need to Know'—which, currently, is only you.",
+"Move in total darkness. Let the world be confused by your sudden elevation. When they ask how you did it, a smirk is the only response required.",
+"The work is silent. The results are deafening."
+]}
+]}  
+,
+"MERCENARY DIPLOMACY — Strategic Alignment": {
+category: "dark",
+sections:[
+{title:"The Sovereign Contract",type:"list",content:[
+"You are a private state. Every 'job' is a diplomatic mission between two sovereign entities.",
+"Loyalty is a transaction, not a sentiment. It exists as long as the mutual utility is greater than zero.",
+"Your 'boss' is a client. Treat them with professional excellence, but zero emotional attachment.",
+"The mission is your growth; the institution is just the infrastructure."
+]},
+{title:"Exit-Ready Performance",type:"list",content:[
+"Always be 'ready to leave'. High performance is your security, not a contract.",
+"Maintain a 6-month 'Freedom Fund'. Financial runway is the root of nonchalance.",
+"Deliver 10x value so that the fear of losing you outweighs the cost of keeping you.",
+"An indispensable man is never a victim of corporate politics."
+]},
+{title:"The Emotional Firebreak",type:"list",content:[
+"Do not engage in office drama. It is a low-frequency drain on your processor.",
+"Be polite, be useful, and be unreachable. Professional warmth is a tactical mask.",
+"Your identity is 'Engineering Architect' or 'AI Specialist', not 'Company Employee'.",
+"Never let an institution’s crisis become your emotional emergency."
+]},
+{title:"The Mercenary’s Creed",type:"paragraphs",content:[
+"The company is a vehicle for your compounding skills. When the vehicle stops moving toward your destination, you exit and find a faster one.",
+"Integrity is doing exactly what you were hired for with lethal efficiency. Diplomacy is doing it while making them feel lucky to have hired you.",
+"Build your empire on the foundations of their projects. You are the architect; they are the financiers."
+]}
+]}  
 };
 
 
 /* ================= RENDER ================= */
 
-const selector = document.getElementById("bookSelector");
-const container = document.getElementById("bookContainer");
+function populateSidebar(){
 
+  const sidebar = document.getElementById("sidebar");
 
-function renderBook(){
+  let normalHTML = `
+  <div class="sidebar-section">
+    <div class="sidebar-title">Normal</div>
+  `;
 
-const selectedBook = BOOKS[selector.value];
-let html = `<div class="book-title">${selector.value}</div>`;
+  let darkHTML = `
+  <div class="sidebar-section">
+    <div class="sidebar-title">Dark</div>
+  `;
 
-selectedBook.sections.forEach(section => {
+  Object.keys(BOOKS).forEach(book => {
 
-html += `
-<button class="section-button" onclick="toggle(this)">
-${section.title}
-</button>
-<div class="section-content">
-`;
+    if(BOOKS[book].category === "normal"){
+      normalHTML += `
+        <div class="sidebar-item" onclick="renderBookByName('${book}')">
+          ${book}
+        </div>
+      `;
+    }
 
-if(section.type === "list"){
-html += "<ul>";
-section.content.forEach(item=>{
-html += `<li>${item}</li>`;
-});
-html += "</ul>";
+    if(BOOKS[book].category === "dark"){
+      darkHTML += `
+        <div class="sidebar-item" onclick="renderBookByName('${book}')">
+          ${book}
+        </div>
+      `;
+    }
+
+  });
+
+  normalHTML += `</div>`;
+  darkHTML += `</div>`;
+
+  sidebar.innerHTML = normalHTML + darkHTML;
 }
 
-if(section.type === "paragraphs"){
-section.content.forEach(p=>{
-html += `<p>${p}</p>`;
-});
+
+function renderBookByName(name){
+
+  const container = document.getElementById("bookContainer");
+  const selectedBook = BOOKS[name];
+
+  if(!selectedBook) return;
+
+  let html = `<div class="book-title">${name}</div>`;
+
+  selectedBook.sections.forEach(section => {
+
+    html += `
+      <button class="section-button" onclick="toggle(this)">
+        ${section.title}
+      </button>
+      <div class="section-content">
+    `;
+
+    if(section.type === "list"){
+      html += "<ul>";
+      section.content.forEach(item=>{
+        html += `<li>${item}</li>`;
+      });
+      html += "</ul>";
+    }
+
+    if(section.type === "paragraphs"){
+      section.content.forEach(p=>{
+        html += `<p>${p}</p>`;
+      });
+    }
+
+    html += "</div>";
+  });
+
+  container.innerHTML = html;
 }
 
-html += "</div>";
-});
-
-container.innerHTML = html;
-}
 
 function toggle(button){
 
-const content = button.nextElementSibling;
-const allSections = document.querySelectorAll(".section-content");
+  const content = button.nextElementSibling;
+  const allSections = document.querySelectorAll(".section-content");
 
-allSections.forEach(section=>{
-  if(section !== content){
-    section.style.maxHeight = null;
-    section.style.padding = "0 35px";
+  allSections.forEach(section=>{
+    if(section !== content){
+      section.style.maxHeight = null;
+      section.style.padding = "0 35px";
+    }
+  });
+
+  if(content.style.maxHeight){
+    content.style.maxHeight = null;
+    content.style.padding = "0 35px";
+  } else {
+    content.style.maxHeight = content.scrollHeight + "px";
+    content.style.padding = "25px 35px";
   }
-});
-
-if(content.style.maxHeight){
-  content.style.maxHeight = null;
-  content.style.padding = "0 35px";
-} else {
-  content.style.maxHeight = content.scrollHeight + "px";
-  content.style.padding = "25px 35px";
 }
-
-}
+populateSidebar();  
 /* ================= PASSWORD ================= */
 
 const PASSWORD = "@Asdasd123"; // ← CHANGE THIS
